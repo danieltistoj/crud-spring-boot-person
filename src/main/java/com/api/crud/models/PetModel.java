@@ -1,25 +1,25 @@
 package com.api.crud.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "pets")
 public class PetModel {
     @Id
     @GeneratedValue
-    Long id;
+    private  Long id;
     private String name;
-    private String date;
+    private byte age;
+    private String race;
+    private String species;
+    @ManyToOne
+    @JoinColumn(name="personId")
+    @JsonBackReference
+    private PersonModel person;
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -30,11 +30,35 @@ public class PetModel {
         this.name = name;
     }
 
-    public String getDate() {
-        return date;
+    public byte getAge() {
+        return age;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setAge(byte age) {
+        this.age = age;
+    }
+
+    public String getRace() {
+        return race;
+    }
+
+    public void setRace(String race) {
+        this.race = race;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+
+    public PersonModel getPerson() {
+        return person;
+    }
+
+    public void setPerson(PersonModel person) {
+        this.person = person;
     }
 }
