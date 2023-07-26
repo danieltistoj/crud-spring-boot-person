@@ -1,6 +1,7 @@
 package com.api.crud.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,11 +9,13 @@ import jakarta.persistence.*;
 public class PetModel {
     @Id
     @GeneratedValue
+    @JsonIgnore
     private  Long id;
     private String name;
     private byte age;
     private String race;
     private String species;
+    private String slug;
     @ManyToOne
     @JoinColumn(name="personId")
     @JsonBackReference
@@ -60,5 +63,13 @@ public class PetModel {
 
     public void setPerson(PersonModel person) {
         this.person = person;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 }

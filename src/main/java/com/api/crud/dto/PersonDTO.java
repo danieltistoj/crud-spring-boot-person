@@ -1,16 +1,12 @@
-package com.api.crud.models;
+package com.api.crud.dto;
 
+import com.api.crud.models.PetModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
-@Table(name="people")
-public class PersonModel {
-    @Id
-    @GeneratedValue
+public class PersonDTO {
     @JsonIgnore
     private  Long id;
     private String slug;
@@ -19,13 +15,15 @@ public class PersonModel {
     private String email;
     private String phone;
     private String direction;
-    @JsonIgnore
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+
     private List<PetModel> pets = new ArrayList<>();
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getSlug() {
@@ -52,14 +50,6 @@ public class PersonModel {
         this.date = date;
     }
 
-    public List<PetModel> getPets() {
-        return pets;
-    }
-
-    public void setPets(List<PetModel> pets) {
-        this.pets = pets;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -82,5 +72,13 @@ public class PersonModel {
 
     public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    public List<PetModel> getPets() {
+        return pets;
+    }
+
+    public void setPets(List<PetModel> pets) {
+        this.pets = pets;
     }
 }
