@@ -48,5 +48,13 @@ public class ControllerPet {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The pet does not exist");
     }
+    @DeleteMapping(path = "/{slug}")
+    public ResponseEntity<Object> deletePet(@PathVariable String slug){
+        PetModel petModel = petService.findBySlug(slug);
+        if(petModel!=null){
+            return ResponseEntity.ok(petService.deletePet(petModel));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The pet does not exist");
+    }
 
 }

@@ -88,5 +88,9 @@ public class  PetService  {
         return petRepository.save(oldPet);
 
     }
+    public Object deletePet(PetModel petModel){
+        petRepository.delete(petModel);
+        return "Pet successfully deleted";
+    }
 
 }
