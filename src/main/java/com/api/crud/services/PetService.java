@@ -1,4 +1,61 @@
 package com.api.crud.services;
 
-public class PetService {
+
+import com.api.crud.models.PersonModel;
+import com.api.crud.models.PetModel;
+import com.api.crud.repositories.IPersonRepository;
+import com.api.crud.repositories.IPetRepository;
+import com.api.crud.tools.Tool;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+import java.util.List;
+import java.util.Optional;
+@Service
+public class  PetService  {
+
+    @Autowired
+    private IPetRepository petRepository;
+    @Autowired
+    private IPersonRepository personRepository;
+    public List<PetModel> allPerson(){
+        return petRepository.findAll();
+    }
+
+    public PetModel findByName(String name){
+        PetModel petModel = checkModel(petRepository.findByName(name));
+        return petModel;
+    }
+    public PetModel findBySlug(String slug){
+        PetModel petModel = checkModel(petRepository.findBySlug(slug));
+        return petModel;
+    }
+
+    public PetModel checkModel(Optional<PetModel> optionalPetModel){
+        PetModel petModel = null;
+        if(optionalPetModel.isPresent()){
+            petModel = optionalPetModel.get();
+            return petModel;
+        }
+        return petModel;
+    }
+    public PetModel savePet(PetModel petModel){
+        if(findByName(petModel.getName())==null){
+            String slug  = Tool.nameToSlug(petModel.getName());
+            petModel.setSlug(slug);
+            if(petModel.getPerson()!=null){
+                Optional<PersonModel> personModelOptional = personRepository.findBySlug(petModel.getPerson().getSlug());
+                if(personModelOptional.isPresent()){
+                    PersonModel personModel = personModelOptional.get();
+                    petModel.setPerson(personModel);
+                }else{
+                    throw new IllegalArgumentException("The person does not exist");
+                }
+            }
+            return petRepository.save(petModel);
+        }
+        throw  new IllegalArgumentException("The pet already exists");
+    }
+
 }
