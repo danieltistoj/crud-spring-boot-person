@@ -11,8 +11,8 @@ import java.util.*;
 public class PersonModel {
     @Id
     @GeneratedValue
-    private  Long id;
     @JsonIgnore
+    private  Long id;
     private String slug;
     private String name;
     private String date;

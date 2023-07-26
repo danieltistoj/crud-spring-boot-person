@@ -20,8 +20,24 @@ public class ControllerPerson {
         List<PersonModel> people = personService.allPerson();
         return ResponseEntity.ok(people);
     }
+
+    @GetMapping( path= "/{slug}")
+    public ResponseEntity<Object> findPersonBySlug(@PathVariable String slug){
+        List<PersonModel> people = personService.findBySlug(slug);
+        if(!people.isEmpty()){
+            return ResponseEntity.ok(people);
+        }
+        return ResponseEntity.ofNullable("the person does not exist");
+    }
+
+
     @PostMapping
-    public ResponseEntity<PersonModel>  createPerson(@RequestBody PersonModel person){
-        return ResponseEntity.ok(personService.savePerson(person));
+    public ResponseEntity<Object>  createPerson(@RequestBody PersonModel person){
+        try{
+            return ResponseEntity.ok(personService.savePerson(person));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 }

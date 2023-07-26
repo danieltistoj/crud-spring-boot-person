@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PersonRepository extends JpaRepository<PersonModel,Long> {
+public interface IPersonRepository extends JpaRepository<PersonModel,Long> {
     List<PersonModel> findByName(String name);
+    List<PersonModel> findBySlug(String slug);
 }
