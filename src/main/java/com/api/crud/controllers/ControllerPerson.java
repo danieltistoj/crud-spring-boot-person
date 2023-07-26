@@ -6,6 +6,7 @@ import com.api.crud.models.PersonModel;
 import com.api.crud.services.PersonService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class ControllerPerson {
         if(person!=null){
             return ResponseEntity.ok(person);
         }
-        return ResponseEntity.ofNullable("the person does not exist");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The person does not exist");
     }
 
 
@@ -51,7 +52,17 @@ public class ControllerPerson {
             }
 
         }
-        return ResponseEntity.ofNullable("the person does not exist");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The person does not exist");
+
+    }
+    @DeleteMapping(path = "/{slug}")
+    public ResponseEntity<Object> deletePerson(@PathVariable String slug){
+
+            try {
+                return ResponseEntity.ok(personService.deletePersonBySlug(slug));
+            }catch (IllegalArgumentException e){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            }
 
     }
 }

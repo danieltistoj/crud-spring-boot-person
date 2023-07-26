@@ -69,6 +69,15 @@ public class PersonService {
         personRepository.save(personModel);
         return personModel;
     }
+    public Object deletePersonBySlug(String slug){
+        Optional<PersonModel> optionalPersonModel =   personRepository.findBySlug(slug);
+        if(optionalPersonModel.isPresent()){
+            PersonModel personModel = optionalPersonModel.get();
+            personRepository.delete(personModel);
+            return "Person deleted successfully";
+        }
+        throw new IllegalArgumentException("The person does not exist");
+    }
 
 
     public PersonDTO extractPerson(Optional<PersonModel> personModel){
