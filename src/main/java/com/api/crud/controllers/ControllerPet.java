@@ -29,13 +29,24 @@ public class ControllerPet {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The pet does not exist");
     }
     @PostMapping
-    public ResponseEntity<Object>  createPerson(@RequestBody PetModel pet){
+    public ResponseEntity<Object>  createPet(@RequestBody PetModel pet){
         try{
             return ResponseEntity.ok(petService.savePet(pet));
         }catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
+    @PutMapping(path = "/{slug}")
+    public ResponseEntity<Object> updadtePet(@RequestBody PetModel pet, @PathVariable String slug){
+        PetModel personModel = petService.findBySlug(slug);
+        if(personModel!=null){
+            try {
+             return ResponseEntity.ok(petService.updatePet(pet,personModel));
+            }catch (IllegalArgumentException e){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The pet does not exist");
+    }
 
 }

@@ -32,7 +32,7 @@ public class  PetService  {
         return petModel;
     }
 
-    public PetModel checkModel(Optional<PetModel> optionalPetModel){
+    private PetModel checkModel(Optional<PetModel> optionalPetModel){
         PetModel petModel = null;
         if(optionalPetModel.isPresent()){
             petModel = optionalPetModel.get();
@@ -40,6 +40,7 @@ public class  PetService  {
         }
         return petModel;
     }
+
     public PetModel savePet(PetModel petModel){
         if(findByName(petModel.getName())==null){
             String slug  = Tool.nameToSlug(petModel.getName());
@@ -56,6 +57,36 @@ public class  PetService  {
             return petRepository.save(petModel);
         }
         throw  new IllegalArgumentException("The pet already exists");
+    }
+    public PetModel updatePet(PetModel updatePet,PetModel oldPet){
+        if(!oldPet.getName().equals(updatePet.getName())&&updatePet.getName()!=null){
+            if(findByName(updatePet.getName())==null){
+                oldPet.setName(updatePet.getName());
+                oldPet.setSlug(Tool.nameToSlug(updatePet.getName()));
+            }else {
+                throw new IllegalArgumentException("Pet name already exists");
+            }
+        }
+        if(updatePet.getAge()!=0){
+            oldPet.setAge(updatePet.getAge());
+        }
+        if (updatePet.getRace()!=null){
+            oldPet.setRace(updatePet.getRace());
+        }
+        if(updatePet.getSpecies()!=null){
+            oldPet.setSpecies(updatePet.getSpecies());
+        }
+        if(updatePet.getPerson()!=null){
+            Optional<PersonModel> personModelOptional = personRepository.findBySlug(updatePet.getPerson().getSlug());
+            if(personModelOptional.isPresent()){
+               oldPet.setPerson(personModelOptional.get());
+            }else{
+                throw new IllegalArgumentException("The person does not exist");
+            }
+        }
+
+        return petRepository.save(oldPet);
+
     }
 
 }
