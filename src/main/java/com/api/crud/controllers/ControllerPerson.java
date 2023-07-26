@@ -1,6 +1,7 @@
 package com.api.crud.controllers;
 
 
+import com.api.crud.dto.PersonDTO;
 import com.api.crud.models.PersonModel;
 import com.api.crud.services.PersonService;
 import org.apache.coyote.Response;
@@ -23,9 +24,9 @@ public class ControllerPerson {
 
     @GetMapping( path= "/{slug}")
     public ResponseEntity<Object> findPersonBySlug(@PathVariable String slug){
-        List<PersonModel> people = personService.findBySlug(slug);
-        if(!people.isEmpty()){
-            return ResponseEntity.ok(people);
+         PersonDTO person = personService.findBySlug(slug);
+        if(person!=null){
+            return ResponseEntity.ok(person);
         }
         return ResponseEntity.ofNullable("the person does not exist");
     }
