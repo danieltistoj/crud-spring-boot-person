@@ -41,4 +41,17 @@ public class ControllerPerson {
         }
 
     }
+    @PutMapping(path = "/{slug}")
+    public ResponseEntity<Object> updatePerson(@RequestBody PersonDTO personDTO, @PathVariable String slug){
+        if(personService.findBySlug(slug)!=null){
+            try {
+                return ResponseEntity.ok(personService.updatePerson(slug,personDTO));
+            }catch (IllegalArgumentException e){
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+
+        }
+        return ResponseEntity.ofNullable("the person does not exist");
+
+    }
 }
