@@ -1,5 +1,6 @@
 package com.api.crud.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -12,6 +13,7 @@ public class UserModel {
     @GeneratedValue
     private Long id;
     private String username;
+    @JsonIgnore
     private String password;
     private String email;
     private String rol;
