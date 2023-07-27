@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 public class UserModel {
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
     private String username;
     @JsonIgnore
