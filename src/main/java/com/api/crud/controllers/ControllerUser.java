@@ -2,6 +2,7 @@ package com.api.crud.controllers;
 
 import com.api.crud.models.UserModel;
 import com.api.crud.services.UserService;
+import com.api.crud.tools.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,14 @@ public class ControllerUser {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("the email already exists");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username already exist");
+    }
+    @PostMapping(path = "/login")
+    public ResponseEntity<CustomResponse> LogIn(@RequestBody UserModel userModel){
+        CustomResponse customResponse = userService.authenticateUser(userModel);
+        if(customResponse.getStatus()==200){
+            return ResponseEntity.ok(customResponse);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(customResponse);
     }
     @GetMapping(path = "/{username}")
     public ResponseEntity<Object> findByUserName(@PathVariable String username){
