@@ -54,6 +54,10 @@ This repository contains the documentation for the Spring CRUD API, which provid
     "slug": "duke"
 }
 ```
+- **Response**: HTTP 400 BAD_REQUEST
+```text
+The person already exists
+```
   
 ### All Pets
 - **URL**: `http://localhost:8080/pets`
@@ -100,6 +104,12 @@ This repository contains the documentation for the Spring CRUD API, which provid
     "slug": "oliver"
 }
 ```
+
+- **Response**: HTTP 404 NOT FOUND
+```text
+The pet does not exist
+```
+
 ### Update Pet
 
 - **URL**: `http://localhost:8080/pets/{slug}`
